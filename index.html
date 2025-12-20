@@ -22,35 +22,59 @@
                 class="weather-search__input" 
                 placeholder="Enter the name of the city"
                 maxlength="15"
+                id="searchInput"
             >
 
             <div class="weather-card">
-                <img src="images/img6.webp" alt="sun image" class="weather-condition__image">
+                <img 
+                    src="images/img6.webp" 
+                    alt="sun image" 
+                    class="weather-condition__image"
+                    id="weatherImage"
+                >
                 
-                <p class="weather-condition__label">Sunny Day</p>
-                <h1 class="weather-temperature">35°</h1>
+                <p class="weather-condition__label" id="conditionLabel">
+                    Sunny Day
+                </p>
+
+                <h1 class="weather-temperature" id="temperature">
+                    35°
+                </h1>
                 
-                <p class="weather-feels-like">Feel like 24°</p>
-                <h3 class="weather-location">London</h3>
+                <p class="weather-feels-like" id="feelsLike">
+                    Feel like 24°
+                </p>
+
+                <h3 class="weather-location" id="location">
+                    London
+                </h3>
             </div>
         </main>
 
         <div class="weather-stats">
             <div class="weather-stat">
                 <p class="weather-stat__label">Rain</p>
-                <p class="weather-stat__value">0%</p>
+                <p class="weather-stat__value" id="rainValue">0%</p>
             </div>
+
             <div class="weather-stat">
                 <p class="weather-stat__label">Humidity</p>
-                <p class="weather-stat__value">40%</p>
+                <p class="weather-stat__value" id="humidityValue">40%</p>
             </div>
+
             <div class="weather-stat">
                 <p class="weather-stat__label">Visibility</p>
-                <p class="weather-stat__value">12Km</p>
+                <p class="weather-stat__value" id="visibilityValue">12Km</p>
             </div>
         </div>
 
-        <img src="images/img5.webp" alt="music icon" class="weather-card__icon" title="sounds">
+        <img 
+            src="images/img5.webp" 
+            alt="music icon" 
+            class="weather-card__icon" 
+            title="sounds"
+            id="musicIcon"
+        >
     </div>
 
     <footer class="weather-footer">
@@ -60,9 +84,7 @@
         <img src="images/img4.webp" alt="cloud" class="weather-footer__image weather-footer__image-4">
         <img src="images/img4.webp" alt="cloud" class="weather-footer__image weather-footer__image-5">
         <img src="images/img4.webp" alt="cloud" class="weather-footer__image weather-footer__image-6">
-        
-    
     </footer>
-
 </body>
+<script src="script.js"></script>
 </html>
