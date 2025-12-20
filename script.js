@@ -1,6 +1,6 @@
-/* =====================================================
-   DOM REFERENCES
-   ===================================================== */
+/* =======================
+   DOM elements
+   ======================= */
 const temperature = document.getElementById("temperature");
 const feelsLike = document.getElementById("feelsLike");
 const conditionLabel = document.getElementById("conditionLabel");
@@ -11,10 +11,7 @@ const weatherImage = document.getElementById("weatherImage");
 const locationName = document.getElementById("location");
 const searchInput = document.getElementById("searchInput");
 
-/* =====================================================
-   WEATHER STATE LOGIC
-   Determines weather label based on data
-   ===================================================== */
+/* Decide the weather text based on temp & wind */
 function getWeatherCondition(temp, wind) {
   if (wind > 20) return "Windy Day";
   if (temp >= 25) return "Sunny Day";
@@ -22,10 +19,7 @@ function getWeatherCondition(temp, wind) {
   return "Cold Day";
 }
 
-/* =====================================================
-   WEATHER IMAGE MAPPING
-   Maps weather state to visual assets
-   ===================================================== */
+/* Pick an image that matches the condition */
 function getWeatherImage(condition) {
   if (condition.includes("Sunny")) return "images/img6.webp";
   if (condition.includes("Windy")) return "images/img1.webp";
@@ -33,19 +27,14 @@ function getWeatherImage(condition) {
   return "images/img3.webp";
 }
 
-/* =====================================================
-   GEOCODING
-   Converts city name into latitude & longitude
-   ===================================================== */
+/* Get lat & lon from city name */
 async function getCoordinates(city) {
-  const GEO_URL = `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1`;
+  const url = `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1`;
 
-  const response = await fetch(GEO_URL);
-  const data = await response.json();
+  const res = await fetch(url);
+  const data = await res.json();
 
-  if (!data.results || data.results.length === 0) {
-    return null;
-  }
+  if (!data.results || !data.results.length) return null;
 
   return {
     lat: data.results[0].latitude,
@@ -54,16 +43,13 @@ async function getCoordinates(city) {
   };
 }
 
-/* =====================================================
-   WEATHER FETCH
-   Fetches weather data using coordinates
-   ===================================================== */
+/* Fetch weather and update the UI */
 async function fetchWeather(lat, lon, cityName) {
   try {
-    const API_URL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,wind_speed_10m&hourly=relative_humidity_2m`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,wind_speed_10m&hourly=relative_humidity_2m`;
 
-    const response = await fetch(API_URL);
-    const data = await response.json();
+    const res = await fetch(url);
+    const data = await res.json();
 
     const temp = Math.round(data.current.temperature_2m);
     const wind = Math.round(data.current.wind_speed_10m);
@@ -71,9 +57,9 @@ async function fetchWeather(lat, lon, cityName) {
 
     const condition = getWeatherCondition(temp, wind);
 
-    /* -------- UI UPDATE -------- */
+    // update UI
     temperature.textContent = `${temp}°`;
-    feelsLike.textContent = `Feel like ${temp - 2}°`;
+    feelsLike.textContent = `Feels like ${temp - 2}°`;
     conditionLabel.textContent = condition;
     humidityValue.textContent = `${humidity}%`;
     rainValue.textContent = "—";
@@ -81,33 +67,26 @@ async function fetchWeather(lat, lon, cityName) {
     weatherImage.src = getWeatherImage(condition);
     locationName.textContent = cityName;
 
-  } catch (error) {
-    console.error("Weather fetch failed:", error);
+  } catch (err) {
+    console.error("Weather request failed", err);
   }
 }
 
-/* =====================================================
-   USER INPUT HANDLER
-   Triggers search on Enter key
-   ===================================================== */
-searchInput.addEventListener("keydown", async (event) => {
-  if (event.key === "Enter") {
-    const city = searchInput.value.trim();
-    if (!city) return;
+/* Search when user presses Enter */
+searchInput.addEventListener("keydown", async (e) => {
+  if (e.key !== "Enter") return;
 
-    const coords = await getCoordinates(city);
+  const city = searchInput.value.trim();
+  if (!city) return;
 
-    if (!coords) {
-      alert("City not found");
-      return;
-    }
-
-    fetchWeather(coords.lat, coords.lon, coords.name);
+  const coords = await getCoordinates(city);
+  if (!coords) {
+    alert("City not found");
+    return;
   }
+
+  fetchWeather(coords.lat, coords.lon, coords.name);
 });
 
-/* =====================================================
-   INITIAL LOAD
-   Default city on page load
-   ===================================================== */
+/* Default city */
 fetchWeather(52.52, 13.41, "Berlin");
