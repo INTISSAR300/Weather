@@ -84,7 +84,7 @@ body {
 
 .weather-temperature {
     color: var(--color-surface-ivory);
-    font-size: 180px;
+    font-size: 150px;
     line-height: 0.9;
     margin-left: 50px;
 }

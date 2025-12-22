@@ -1,6 +1,4 @@
-/* =======================
-   DOM elements
-   ======================= */
+/* ======================= DOM elements ======================= */
 const temperature = document.getElementById("temperature");
 const feelsLike = document.getElementById("feelsLike");
 const conditionLabel = document.getElementById("conditionLabel");
@@ -11,7 +9,13 @@ const weatherImage = document.getElementById("weatherImage");
 const locationName = document.getElementById("location");
 const searchInput = document.getElementById("searchInput");
 
-/* Decide the weather text based on temp & wind */
+/* Theme-related elements */
+const sidebar = document.querySelector(".weather-sidebar");
+const brand = document.querySelector(".weather-brand");
+const statsLabels = document.querySelectorAll(".weather-stat__label");
+const statsValues = document.querySelectorAll(".weather-stat__value");
+
+/* ======================= Weather logic ======================= */
 function getWeatherCondition(temp, wind) {
   if (wind > 20) return "Windy Day";
   if (temp >= 25) return "Sunny Day";
@@ -19,15 +23,74 @@ function getWeatherCondition(temp, wind) {
   return "Cold Day";
 }
 
-/* Pick an image that matches the condition */
 function getWeatherImage(condition) {
   if (condition.includes("Sunny")) return "images/img6.webp";
-  if (condition.includes("Windy")) return "images/img1.webp";
+  if (condition.includes("Windy")) return "images/img3.webp";
   if (condition.includes("Cloudy")) return "images/img1.webp";
   return "images/img3.webp";
 }
 
-/* Get lat & lon from city name */
+/* ======================= Theme handling ======================= */
+function applyWeatherTheme(condition) {
+  const isDarkWeather =
+    condition.includes("Cold") ||
+    condition.includes("Rainy") ||
+    condition.includes("Windy");
+
+  const isCloudy = condition.includes("Cloudy");
+
+  /* ===== Cold / Rainy / Windy ===== */
+  if (isDarkWeather) {
+    document.body.style.backgroundColor = "#595880";
+    sidebar.style.backgroundColor = "#CBCBE7";
+    sidebar.style.opacity = "1";
+
+    brand.style.color = "#595880";
+
+    conditionLabel.style.color = "#FDFAE7";
+    feelsLike.style.color = "#FDFAE7";
+    locationName.style.color = "#FDFAE7";
+    temperature.style.color = "#CBCBE7";
+
+    statsLabels.forEach(el => (el.style.color = "#FDFAE7"));
+    statsValues.forEach(el => (el.style.color = "#FDFAE7"));
+    return;
+  }
+
+  /* ===== Cloudy ONLY ===== */
+  if (isCloudy) {
+    document.body.style.backgroundColor = "#B7B7E9";
+    sidebar.style.backgroundColor = "#595880";
+    sidebar.style.opacity = "0.85";
+
+    brand.style.color = "#FDFAE7";
+
+    conditionLabel.style.color = "#595880";
+    feelsLike.style.color = "#595880";
+    locationName.style.color = "#595880";
+    temperature.style.color = "#595880";
+
+    statsLabels.forEach(el => (el.style.color = "#595880"));
+    statsValues.forEach(el => (el.style.color = "#595880"));
+    return;
+  }
+
+  /* ===== Sunny (reset to default) ===== */
+  document.body.style.backgroundColor = "";
+  sidebar.style.backgroundColor = "";
+  sidebar.style.opacity = "";
+
+  brand.style.color = "";
+  conditionLabel.style.color = "";
+  feelsLike.style.color = "";
+  locationName.style.color = "";
+  temperature.style.color = "";
+
+  statsLabels.forEach(el => (el.style.color = ""));
+  statsValues.forEach(el => (el.style.color = ""));
+}
+
+/* ======================= Geocoding ======================= */
 async function getCoordinates(city) {
   const url = `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1`;
 
@@ -43,7 +106,7 @@ async function getCoordinates(city) {
   };
 }
 
-/* Fetch weather and update the UI */
+/* ======================= Weather fetch ======================= */
 async function fetchWeather(lat, lon, cityName) {
   try {
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,wind_speed_10m&hourly=relative_humidity_2m`;
@@ -57,7 +120,6 @@ async function fetchWeather(lat, lon, cityName) {
 
     const condition = getWeatherCondition(temp, wind);
 
-    // update UI
     temperature.textContent = `${temp}°`;
     feelsLike.textContent = `Feels like ${temp - 2}°`;
     conditionLabel.textContent = condition;
@@ -67,12 +129,14 @@ async function fetchWeather(lat, lon, cityName) {
     weatherImage.src = getWeatherImage(condition);
     locationName.textContent = cityName;
 
+    applyWeatherTheme(condition);
+
   } catch (err) {
     console.error("Weather request failed", err);
   }
 }
 
-/* Search when user presses Enter */
+/* ======================= Search handler ======================= */
 searchInput.addEventListener("keydown", async (e) => {
   if (e.key !== "Enter") return;
 
@@ -88,5 +152,5 @@ searchInput.addEventListener("keydown", async (e) => {
   fetchWeather(coords.lat, coords.lon, coords.name);
 });
 
-/* Default city */
+/* ======================= Default load ======================= */
 fetchWeather(52.52, 13.41, "Berlin");
