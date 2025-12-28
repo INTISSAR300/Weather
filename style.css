@@ -137,8 +137,7 @@ body {
     top: 20px;
     right: 150px;
     width: 90px;
-    /* pointer-events: none; */
-    cursor: pointer;
+    pointer-events: none;
     animation: rotateicon 6s linear infinite;
     transform-origin: center;
 }
