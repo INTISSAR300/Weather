@@ -137,8 +137,20 @@ body {
     top: 20px;
     right: 150px;
     width: 90px;
-    animation-name: rotateicon;
-    pointer-events: none;
+    /* pointer-events: none; */
+    cursor: pointer;
+    animation: rotateicon 6s linear infinite;
+    transform-origin: center;
+}
+
+
+@keyframes rotateicon {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 
