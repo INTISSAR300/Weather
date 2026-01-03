@@ -3,13 +3,11 @@
     padding: 0;
     box-sizing: border-box;
 }
-
 :root {
     --color-primary-slate: #595880;
     --color-accent-lavender: #CBCBE7;
     --color-surface-ivory: #FDFAE7;
 }
-
 body {
     font-family: "Silkscreen", sans-serif;
     background-color: var(--color-accent-lavender);
@@ -18,14 +16,12 @@ body {
     flex-direction: column;
     overflow: hidden;
 }
-
 .weather-app {
     flex: 1;
     display: grid;
     grid-template-columns: 80px 1fr 200px;
     position: relative;
 }
-
 .weather-sidebar {
     background-color: var(--color-primary-slate);
     display: flex;
@@ -34,7 +30,6 @@ body {
     height: 100vh;
     z-index: 20;
 }
-
 .weather-brand {
     color: var(--color-surface-ivory);
     font-weight: bold;
@@ -44,7 +39,6 @@ body {
     text-transform: uppercase;
     letter-spacing: 4px;
 }
-
 .weather-center {
     display: flex;
     flex-direction: column;
@@ -52,7 +46,6 @@ body {
     justify-content: center;
     padding-bottom: 100px;
 }
-
 .weather-search__input {
     width: 500px;
     height: 60px;
@@ -66,29 +59,24 @@ body {
     text-transform: uppercase;
     margin-bottom: 50px;
 }
-
 .weather-search__input:focus {
     outline:none;
 }
-
 .weather-card {
     position: relative;
     text-align: center;
 }
-
 .weather-condition__label {
     color: var(--color-surface-ivory);
     font-size: 60px;
     text-transform: uppercase;
 }
-
 .weather-temperature {
     color: var(--color-surface-ivory);
     font-size: 150px;
     line-height: 0.9;
     margin-left: 50px;
 }
-
 .weather-condition__image {
     width: 300px;
     position: absolute;
@@ -98,22 +86,17 @@ body {
     z-index: -1;
     rotate: -10deg;
 }
-
-
-
 .weather-feels-like {
     color: var(--color-primary-slate);
     font-size: 32px;
     margin-top: 10px;
     text-transform: uppercase;
 }
-
 .weather-location {
     color: var(--color-primary-slate);
     font-size: 80px;
     text-transform: uppercase;
 }
-
 .weather-stats {
     display: flex;
     flex-direction: column;
@@ -122,16 +105,13 @@ body {
     color: var(--color-primary-slate);
     padding-right: 40px;
 }
-
 .weather-stat__label {
     font-size: 18px;
     text-transform: uppercase;
 }
-
 .weather-stat__value {
     font-size: 22px;
 }
-
 .weather-card__icon {
     position: absolute;
     top: 20px;
@@ -141,8 +121,6 @@ body {
     animation: rotateicon 6s linear infinite;
     transform-origin: center;
 }
-
-
 @keyframes rotateicon {
     from {
         transform: rotate(0deg);
@@ -151,8 +129,6 @@ body {
         transform: rotate(360deg);
     }
 }
-
-
 .weather-footer {
     position: fixed;
     bottom: -10px;
@@ -162,7 +138,6 @@ body {
     z-index:20;
 
 }
-
 .weather-footer__image {
     width: 16%;
     display: block;
